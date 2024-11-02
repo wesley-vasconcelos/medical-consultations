@@ -25,6 +25,7 @@ export const Create = () => {
   const { createAppointment } = useAppointments();
 
   const {
+    register,
     handleSubmit,
     formState: { errors },
   } = useForm<AppointmentFormValues>({
@@ -47,13 +48,14 @@ export const Create = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <TextInput id="name" label="Nome" errors={errors} />
+      <TextInput id="name" label="Nome" register={register} errors={errors} />
 
       <div>
         <label htmlFor="dateTime">Data e Hora:</label>
         <input
           id="dateTime"
           type="datetime-local"
+          {...register("date")}
           className="border p-2 rounded w-full"
         />
         {errors.date && (
@@ -61,7 +63,12 @@ export const Create = () => {
         )}
       </div>
 
-      <TextInput id="address" label="Endereço" errors={errors} />
+      <TextInput
+        id="address"
+        label="Endereço"
+        register={register}
+        errors={errors}
+      />
 
       <div className="flex justify-end">
         <Button type="submit" variant="filled" className="md:w-auto">

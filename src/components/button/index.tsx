@@ -32,7 +32,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
-      className={`${baseStyles} ${variantStyles} 
+      className={`${baseStyles}  ${variantStyles} 
                   text-xs sm:text-sm md:text-base lg:text-lg 
                   w-full`}
     >

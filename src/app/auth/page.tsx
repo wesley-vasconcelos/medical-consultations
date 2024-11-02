@@ -22,6 +22,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const {
+    register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>({
@@ -45,11 +46,18 @@ export default function LoginPage() {
           Login
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <TextInput id="email" label="Email" type="email" errors={errors} />
+          <TextInput
+            id="email"
+            label="Email"
+            type="email"
+            register={register}
+            errors={errors}
+          />
           <TextInput
             id="password"
             label="Senha"
             type="password"
+            register={register}
             errors={errors}
           />
           {loginError && <p className="text-sm text-red-500">{loginError}</p>}

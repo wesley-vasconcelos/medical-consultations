@@ -53,7 +53,7 @@ export const useAppointments = () => {
 
   const getAppointmentId = async (id: string): Promise<Appointment | null> => {
     try {
-      const response = await fetch(`/api/appointments/${id}`);
+      const response = await api.get(`/appointments/${id}`);
       if (!response.ok) {
         throw new Error("Erro ao buscar agendamento");
       }

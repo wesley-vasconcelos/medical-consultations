@@ -1,11 +1,12 @@
 import React from "react";
-import { FieldErrors } from "react-hook-form";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
 
 interface TextInputProps {
   id: string;
   label: string;
   type?: string;
   value?: string;
+  register: UseFormRegister<any>;
   errors: FieldErrors;
 }
 
@@ -14,6 +15,7 @@ const TextInput: React.FC<TextInputProps> = ({
   label,
   type = "text",
   value = "",
+  register,
   errors,
 }) => {
   return (
@@ -23,6 +25,7 @@ const TextInput: React.FC<TextInputProps> = ({
         id={id}
         type={type}
         defaultValue={value}
+        {...register(id)}
         className="border p-2 rounded w-full"
       />
       {errors[id] && (
