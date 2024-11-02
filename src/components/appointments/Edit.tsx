@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -27,6 +28,7 @@ export const EditAppointments = () => {
   const { getAppointmentId, updateAppointment } = useAppointments();
 
   const {
+    register,
     handleSubmit,
     formState: { errors },
     setValue,
@@ -48,19 +50,17 @@ export const EditAppointments = () => {
 
         if (data && isAppointment(data)) {
           setAppointment(data);
-        } else {
-          setIsError(true);
+          setIsLoading(false);
         }
-      } catch (error) {
+      } catch {
         setIsError(true);
-        console.error("Erro ao buscar agendamento:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    fetchAppointment();
-  }, [id, getAppointmentId]);
+    if (id) {
+      fetchAppointment();
+    }
+  }, [id]);
 
   const isAppointment = (data: Appointment) => {
     return (
@@ -87,11 +87,11 @@ export const EditAppointments = () => {
   }, [appointment, isError, setValue]);
 
   const onSubmit = async (data: AppointmentFormValues) => {
+    const _id = id as string;
     try {
       if (typeof id === "string") {
         const appointmentData = {
-          id,
-          title: "",
+          _id,
           ...data,
         };
         await updateAppointment.mutateAsync(appointmentData);
@@ -111,11 +111,12 @@ export const EditAppointments = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <TextInput id="name" label="Nome" errors={errors} />
+      <TextInput id="name" label="Nome" register={register} errors={errors} />
       <div>
         <label htmlFor="dateTime">Data e Hora:</label>
         <input
           id="dateTime"
+          {...register("date")}
           type="datetime-local"
           className="border p-2 rounded w-full"
         />
@@ -123,7 +124,12 @@ export const EditAppointments = () => {
           <p className="text-red-500 text-sm">{errors.date.message}</p>
         )}
       </div>
-      <TextInput id="address" label="Endereço" errors={errors} />
+      <TextInput
+        id="address"
+        label="Endereço"
+        register={register}
+        errors={errors}
+      />
       <div className="flex justify-end">
         <Button type="submit" variant="filled" className="md:w-auto">
           Atualizar Agendamento

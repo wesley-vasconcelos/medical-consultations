@@ -34,6 +34,8 @@ export const useAppointments = () => {
   const updateAppointment = useMutation({
     mutationFn: async (updatedAppointment: Appointment) => {
       const { _id, ...data } = updatedAppointment;
+      console.log("data", data);
+
       const response = await api.put(`/appointments/${_id}`, data);
       return response.data;
     },
@@ -54,13 +56,15 @@ export const useAppointments = () => {
   const getAppointmentId = async (id: string): Promise<Appointment | null> => {
     try {
       const response = await api.get(`/appointments/${id}`);
-      if (!response.ok) {
+
+      if (response.status !== 200) {
         throw new Error("Erro ao buscar agendamento");
       }
-      const data: Appointment = await response.json();
+
+      const data: Appointment = response.data;
       return data;
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao buscar agendamento:", error);
       return null;
     }
   };
